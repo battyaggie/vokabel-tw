@@ -94,11 +94,6 @@ export async function setGroup(code, groupId, patch) {
   await c.fs.updateDoc(paths(c, code).group(groupId), patch);
 }
 
-export async function setPlayerVerdict(code, uid, lastAnswer) {
-  const c = await connect();
-  await c.fs.updateDoc(paths(c, code).player(uid), { lastAnswer: lastAnswer });
-}
-
 // Host-only. Only the fields the rules allow on a player doc:
 // words / currentWordId / answeredAt / lastAnswer / asked.
 export async function setPlayer(code, uid, patch) {
@@ -144,10 +139,14 @@ export async function joinLobby(code, firstName, hostUid) {
   return c.uid;
 }
 
-export async function submitAnswer(code, wordId, text) {
+// Who typed it doesn't matter — the whole group shares one answer slot, so
+// judging only ever needs to watch the (small) groups collection, never all
+// player docs. First submission for the current word wins; a straggler's
+// write for a word that's already been judged is simply stale and ignored.
+export async function submitGroupAnswer(code, groupId, wordId, text) {
   const c = await connect();
-  await c.fs.updateDoc(paths(c, code).player(c.uid), {
-    lastAnswer: { wordId: wordId, text: text, at: Date.now(), verdict: 'pending' }
+  await c.fs.updateDoc(paths(c, code).group(groupId), {
+    pendingAnswer: { wordId: wordId, text: text, at: Date.now() }
   });
 }
 
