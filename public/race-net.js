@@ -65,6 +65,8 @@ export async function createSession(code, opts) {
   await c.fs.setDoc(p.session, {
     hostUid: c.uid,
     state: opts.state || 'running',
+    mode: opts.mode || 'type',
+    blind: !!opts.blind,
     goal: opts.goal,
     scope: opts.scope,
     defs: opts.defs,          // { wordId: definitionText } — no answers here
