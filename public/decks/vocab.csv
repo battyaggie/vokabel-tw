@@ -1,0 +1,55 @@
+english,german,definition,semester,week,programme
+array,das Feld,An ordered collection of elements stored under one name,1,1,Computer Science
+loop,die Schleife,A construct that repeats a block of code,1,1,Computer Science
+variable,die Variable,A named container that holds a value,1,1,Computer Science
+compiler,der Compiler,A program that translates source code into machine code,1,1,Computer Science
+pointer,der Zeiger,A value that stores a memory address,1,1,Computer Science
+bug,der Programmfehler,A defect that makes a program behave incorrectly,1,1,Computer Science
+requirement,die Anforderung,A documented need a system has to fulfil,1,2,Computer Science
+deployment,die Bereitstellung,Releasing software into a live environment,1,2,Computer Science
+version control,die Versionsverwaltung,A system that records changes to files over time,1,2,Computer Science
+refactoring,die Umstrukturierung,Improving code structure without changing behaviour,1,2,Computer Science
+unit test,der Modultest,An automated check of one small code component,1,2,Computer Science
+code review,die Codeüberprüfung,Colleagues inspecting code before it is merged,1,2,Computer Science
+firewall,die Brandmauer,A filter that controls traffic between networks,2,1,Computer Science
+encryption,die Verschlüsselung,Converting data so only authorised parties can read it,2,1,Computer Science
+latency,die Latenz,The delay between sending and receiving data,2,1,Computer Science
+bandwidth,die Bandbreite,The maximum data rate of a connection,2,1,Computer Science
+packet,das Datenpaket,A small unit of data sent across a network,2,1,Computer Science
+machine learning,das maschinelle Lernen,Systems that improve at a task from data,2,2,Computer Science
+training data,die Trainingsdaten,The examples used to fit a model,2,2,Computer Science
+neural network,das neuronale Netz,A model of connected layers of weighted nodes,2,2,Computer Science
+bias,die Verzerrung,A systematic error that skews results,2,2,Computer Science
+query,die Abfrage,A request for specific data from a store,2,2,Computer Science
+actuator,der Aktor,A component that converts a signal into motion,1,1,Mechatronics and Robotics
+sensor,der Sensor,A device that measures a physical quantity,1,1,Mechatronics and Robotics
+gear,das Zahnrad,A toothed wheel that transmits torque,1,1,Mechatronics and Robotics
+torque,das Drehmoment,The turning force acting on an axis,1,1,Mechatronics and Robotics
+bearing,das Lager,A part that guides a rotating shaft with low friction,1,1,Mechatronics and Robotics
+shaft,die Welle,A rotating rod that transmits power,1,1,Mechatronics and Robotics
+control loop,der Regelkreis,"A cycle of measuring, comparing and correcting",1,2,Mechatronics and Robotics
+gripper,der Greifer,The end effector a robot uses to hold objects,1,2,Mechatronics and Robotics
+calibration,die Kalibrierung,Adjusting a device to a known reference,1,2,Mechatronics and Robotics
+payload,die Traglast,The maximum mass a robot can carry,1,2,Mechatronics and Robotics
+welding,das Schweißen,Joining metal parts by melting them together,1,2,Mechatronics and Robotics
+implant,das Implantat,A device placed inside the body to restore function,1,1,Biomedical Engineering
+prosthesis,die Prothese,An artificial replacement for a missing body part,1,1,Biomedical Engineering
+tissue,das Gewebe,A group of similar cells with a shared function,1,1,Biomedical Engineering
+syringe,die Spritze,A tube with a plunger used to inject fluids,1,1,Biomedical Engineering
+blood pressure,der Blutdruck,The force of blood against the vessel walls,1,1,Biomedical Engineering
+clinical trial,die klinische Prüfung,A study testing a treatment on patients,1,2,Biomedical Engineering
+dosage,die Dosierung,The amount of a drug given at one time,1,2,Biomedical Engineering
+imaging,die Bildgebung,Making pictures of the inside of the body,1,2,Biomedical Engineering
+side effect,die Nebenwirkung,An unintended reaction to a treatment,1,2,Biomedical Engineering
+heart rate,die Herzfrequenz,The number of heartbeats per minute,1,2,Biomedical Engineering
+wind turbine,die Windkraftanlage,A machine that converts wind into electricity,1,1,Renewable Energy
+grid,das Stromnetz,The network that distributes electrical power,1,1,Renewable Energy
+load,die Last,The power drawn by consumers at a given moment,1,1,Renewable Energy
+storage,der Speicher,A system that keeps energy for later use,1,1,Renewable Energy
+efficiency,der Wirkungsgrad,Useful output divided by total input,1,1,Renewable Energy
+emission,die Emission,A substance released into the environment,1,1,Renewable Energy
+heat pump,die Wärmepumpe,A device moving heat from a cool to a warm space,1,2,Renewable Energy
+photovoltaics,die Photovoltaik,Direct conversion of sunlight into electricity,1,2,Renewable Energy
+insulation,die Dämmung,Material that reduces unwanted heat transfer,1,2,Renewable Energy
+feed-in tariff,die Einspeisevergütung,A guaranteed price paid for supplied green power,1,2,Renewable Energy
+peak demand,die Spitzenlast,The highest power consumption in a period,1,2,Renewable Energy
