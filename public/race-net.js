@@ -64,19 +64,24 @@ export async function createSession(code, opts) {
   const p = paths(c, code);
   await c.fs.setDoc(p.session, {
     hostUid: c.uid,
-    state: 'running',
+    state: opts.state || 'running',
     goal: opts.goal,
     scope: opts.scope,
     defs: opts.defs,          // { wordId: definitionText } — no answers here
     createdAt: Date.now()
   });
-  for (const g of opts.groups) {
-    await c.fs.setDoc(p.group(g.id), {
+  for (const g of (opts.groups || [])) {
+  await c.fs.setDoc(p.group(g.id), {
       name: g.name, points: 0, memberCount: 0,
       currentWordId: g.currentWordId, status: 'ready', answeredAt: 0
     });
   }
   return c.uid;
+}
+
+export async function putGroup(code, groupId, data) {
+  const c = await connect();
+  await c.fs.setDoc(paths(c, code).group(groupId), data);
 }
 
 export async function setGroup(code, groupId, patch) {
@@ -87,6 +92,18 @@ export async function setGroup(code, groupId, patch) {
 export async function setPlayerVerdict(code, uid, lastAnswer) {
   const c = await connect();
   await c.fs.updateDoc(paths(c, code).player(uid), { lastAnswer: lastAnswer });
+}
+
+// Host-only. Only the fields the rules allow on a player doc:
+// words / currentWordId / answeredAt / lastAnswer / asked.
+export async function setPlayer(code, uid, patch) {
+  const c = await connect();
+  await c.fs.updateDoc(paths(c, code).player(uid), patch);
+}
+
+export async function setSession(code, patch) {
+  const c = await connect();
+  await c.fs.updateDoc(paths(c, code).session, patch);
 }
 
 export async function finishSession(code, winner) {
@@ -110,11 +127,12 @@ export async function readSession(code) {
   return snap.exists() ? snap.data() : null;
 }
 
-export async function joinSession(code, groupId, firstName) {
+// Students join a lobby with a name only — the projector assigns groups.
+export async function joinLobby(code, firstName) {
   const c = await connect();
-  const p = paths(c, code);
-  await c.fs.setDoc(p.player(c.uid), { firstName: firstName, groupId: groupId, lastAnswer: null });
-  await c.fs.updateDoc(p.group(groupId), { memberCount: c.fs.increment(1) });
+  await c.fs.setDoc(paths(c, code).player(c.uid), {
+    firstName: firstName, groupId: '', words: [], currentWordId: '', lastAnswer: null
+  });
   return c.uid;
 }
 
