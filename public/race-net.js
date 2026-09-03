@@ -53,7 +53,12 @@ function paths(c, code) {
     groups: fs.collection(db, 'sessions', code, 'groups'),
     players: fs.collection(db, 'sessions', code, 'players'),
     group: id => fs.doc(db, 'sessions', code, 'groups', id),
-    player: id => fs.doc(db, 'sessions', code, 'players', id)
+    player: id => fs.doc(db, 'sessions', code, 'players', id),
+    // Host-only whole-collection listens must filter by hostUid: Firestore rejects a
+    // list query outright (not a per-doc filter) when the rule needs resource.data
+    // and the query has no matching where() clause proving every result qualifies.
+    hostGroups: () => fs.query(fs.collection(db, 'sessions', code, 'groups'), fs.where('hostUid', '==', c.uid)),
+    hostPlayers: () => fs.query(fs.collection(db, 'sessions', code, 'players'), fs.where('hostUid', '==', c.uid))
   };
 }
 
@@ -114,7 +119,7 @@ export async function finishSession(code, winner) {
 export async function closeSession(code) {
   const c = await connect();
   const p = paths(c, code);
-  const [gs, ps] = await Promise.all([c.fs.getDocs(p.groups), c.fs.getDocs(p.players)]);
+  const [gs, ps] = await Promise.all([c.fs.getDocs(p.hostGroups()), c.fs.getDocs(p.hostPlayers())]);
   await Promise.all(gs.docs.map(d => c.fs.deleteDoc(d.ref)).concat(ps.docs.map(d => c.fs.deleteDoc(d.ref))));
   await c.fs.deleteDoc(p.session);
 }
@@ -150,14 +155,14 @@ export async function submitAnswer(code, wordId, text) {
 
 export async function watchGroups(code, cb) {
   const c = await connect();
-  return c.fs.onSnapshot(paths(c, code).groups, snap => {
+  return c.fs.onSnapshot(paths(c, code).hostGroups(), snap => {
     cb(snap.docs.map(d => Object.assign({ id: d.id }, d.data())));
   }, () => cb(null));
 }
 
 export async function watchPlayers(code, cb) {
   const c = await connect();
-  return c.fs.onSnapshot(paths(c, code).players, snap => {
+  return c.fs.onSnapshot(paths(c, code).hostPlayers(), snap => {
     cb(snap.docs.map(d => Object.assign({ uid: d.id }, d.data())));
   }, () => cb(null));
 }
