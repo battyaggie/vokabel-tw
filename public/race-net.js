@@ -68,22 +68,20 @@ export async function createSession(code, opts) {
     mode: opts.mode || 'type',
     blind: !!opts.blind,
     goal: opts.goal,
+
     scope: opts.scope,
     defs: opts.defs,          // { wordId: definitionText } — no answers here
     createdAt: Date.now()
   });
-  for (const g of (opts.groups || [])) {
-  await c.fs.setDoc(p.group(g.id), {
-      name: g.name, points: 0, memberCount: 0,
-      currentWordId: g.currentWordId, status: 'ready', answeredAt: 0
-    });
-  }
   return c.uid;
 }
 
+// hostUid is stamped on every group and player doc so the security rules can
+// authorise the host by comparing a field instead of fetching the session doc —
+// a rules get() is a billed read on every single write.
 export async function putGroup(code, groupId, data) {
   const c = await connect();
-  await c.fs.setDoc(paths(c, code).group(groupId), data);
+  await c.fs.setDoc(paths(c, code).group(groupId), Object.assign({ hostUid: c.uid }, data));
 }
 
 export async function setGroup(code, groupId, patch) {
@@ -130,10 +128,13 @@ export async function readSession(code) {
 }
 
 // Students join a lobby with a name only — the projector assigns groups.
-export async function joinLobby(code, firstName) {
+// hostUid is copied from the session so the rules can authorise the host
+// without a get(); groupId is filled in by the projector when it presses GO.
+export async function joinLobby(code, firstName, hostUid) {
   const c = await connect();
   await c.fs.setDoc(paths(c, code).player(c.uid), {
-    firstName: firstName, groupId: '', words: [], currentWordId: '', lastAnswer: null
+    firstName: firstName, hostUid: hostUid || '', groupId: '',
+    words: [], currentWordId: '', lastAnswer: null
   });
   return c.uid;
 }
